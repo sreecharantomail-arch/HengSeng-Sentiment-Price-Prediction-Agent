@@ -8,3 +8,4 @@ Exchanges: HKEX (Hong Kong) & KRX (South Korea)
 """
 
 __version__ = "1.0.0"
+

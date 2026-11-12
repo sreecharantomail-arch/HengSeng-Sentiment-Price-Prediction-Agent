@@ -156,6 +156,8 @@ class FeatureRow(BaseModel):
     social_mention_velocity: float = 0.0  # Mentions per hour
     news_sentiment: float = 0.0
     engagement_score: float = 0.0
+    sentiment_lag_1d: float = 0.0
+    sentiment_lag_2d: float = 0.0
     # Target
     target_price: Optional[float] = None
     target_direction: Optional[int] = None  # 1 = up, 0 = down
@@ -167,8 +169,8 @@ class PricePrediction(BaseModel):
     ticker_name: str
     exchange: str
     current_price: float
-    predicted_price: float
-    predicted_change_pct: float
+    predicted_price: Optional[float] = None
+    predicted_change_pct: Optional[float] = None
     predicted_direction: SentimentDirection
     confidence: float = 0.0
     model_name: str = ""
@@ -199,6 +201,7 @@ class TickerAnalysis(BaseModel):
     news_mention_count: int = 0
     sentiment_trend: str = ""  # "improving", "declining", "stable"
     sentiment_sources: dict[str, float] = Field(default_factory=dict)
+    sentiment_scores: list[float] = Field(default_factory=list)
 
     # Technicals
     support_resistance: Optional[SupportResistance] = None
@@ -211,3 +214,4 @@ class TickerAnalysis(BaseModel):
     data_quality_score: float = 0.0  # 0-1, how much data we found
     post_count: int = 0
     article_count: int = 0
+

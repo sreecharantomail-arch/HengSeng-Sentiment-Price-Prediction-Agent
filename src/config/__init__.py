@@ -148,3 +148,4 @@ def get_config() -> PipelineConfig:
     if _config is None:
         _config = PipelineConfig()
     return _config
+
