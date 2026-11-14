@@ -140,8 +140,8 @@ To reproduce the live scraping pipeline, configure your tokens in `.env`. The sc
 Clone the repository and install dependencies in Python 3.10+:
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
-cd "Sentiment pipeline"
+git clone https://github.com/sreecharantomail-arch/HengSeng-Sentiment-Price-Prediction-Agent.git
+cd HengSeng-Sentiment-Price-Prediction-Agent
 pip install -r requirements.txt
 ```
 
@@ -219,10 +219,13 @@ output/dashboard.html
 
 ## Submission Information
 
+- **Candidate**: Vellanki Sricharan
 - **Assessment Document**: [Assessment Reference](https://docs.google.com/document/d/1t-SSYC_thT-PEUYDyta4zqmuYTjk9kPlYmK5g4gYE2Y/edit?tab=t.0)
+- **Repository**: [https://github.com/sreecharantomail-arch/HengSeng-Sentiment-Price-Prediction-Agent](https://github.com/sreecharantomail-arch/HengSeng-Sentiment-Price-Prediction-Agent)
 - **Recipient**: `gilad@crowdwisdomtrading.com`
 - **Scraping Actors Used**:
-  - `apify/web-scraper` (LIHKG, Naver Finance, Daum Finance)
-  - `apify/telegram-scraper` (Telegram channels)
-  - `Exa.ai` REST API (`exa-py` SDK)
+  - `apify/web-scraper` (LIHKG, Naver Finance 종목토론실, Daum Finance 토론)
+  - `apify/telegram-scraper` (Hong Kong and regional market Telegram channels)
+  - `Exa.ai` REST API (`exa-py` SDK) & Tavily news search fallback
+- **Verification Suite**: 25/25 automated unit & integration tests passing (`python tests/test_all_fixes.py`)
 
