@@ -158,6 +158,7 @@ Edit `.env` with your API keys:
 ```env
 APIFY_API_TOKEN=your_apify_token_here
 EXA_API_KEY=your_exa_api_key_here
+TAVILY_API_KEY=your_tavily_api_key_here
 ```
 
 ### 3. Execution
@@ -169,11 +170,12 @@ Runs live data scraping across HKEX and KRX, runs multi-lingual sentiment infere
 python main.py
 ```
 
-#### Offline / Mock Pipeline Execution
-Runs the full pipeline using deterministic multi-lingual demo data without requiring active Apify or Exa credentials:
+#### Offline / Demonstration Pipeline Execution
+Runs the full pipeline using deterministic multi-lingual demo data without requiring active external API credentials or network requests:
 
 ```bash
-python main.py --mock
+python main.py --mode offline
+# (also supports: python main.py --mock or python main.py --offline)
 ```
 
 ---

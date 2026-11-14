@@ -72,8 +72,10 @@ async def run_pipeline(
     output_file = output_html_path or (OUTPUT_DIR / "dashboard.html")
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
-    has_apify = bool(os.getenv("APIFY_API_TOKEN"))
-    has_exa = bool(os.getenv("EXA_API_KEY"))
+    raw_apify = (os.getenv("APIFY_API_TOKEN") or "").strip()
+    raw_exa = (os.getenv("EXA_API_KEY") or "").strip()
+    has_apify = bool(raw_apify) and not raw_apify.startswith("your_")
+    has_exa = bool(raw_exa) and not raw_exa.startswith("your_")
     use_live_scrapers = (has_apify and has_exa) and not force_mock
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -85,7 +87,7 @@ async def run_pipeline(
         manager = ScraperManager(config=config)
         posts, articles = await manager.scrape_all(lookback_days=lookback_days)
     else:
-        reason = "Demo/Mock flag active" if force_mock else "APIFY_API_TOKEN / EXA_API_KEY not configured"
+        reason = "Offline/Mock flag active" if force_mock else "APIFY_API_TOKEN / EXA_API_KEY not configured"
         logger.info("%s — generating realistic multi-lingual demo dataset...", reason)
         posts = generate_demo_social_posts(lookback_days=lookback_days)
         articles = generate_demo_news_articles(lookback_days=lookback_days)
@@ -292,9 +294,21 @@ def main() -> None:
         help="Lookback days for sentiment scraping & technical windows (default: 10)",
     )
     parser.add_argument(
+        "--mode",
+        type=str,
+        choices=["live", "offline", "mock"],
+        default=None,
+        help="Pipeline execution mode: 'live' (uses APIs) or 'offline'/'mock' (runs without external API keys)",
+    )
+    parser.add_argument(
         "--mock",
         action="store_true",
-        help="Force realistic demo/mock data (runs offline without API keys)",
+        help="Alias for --mode mock (runs offline without external API keys)",
+    )
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Alias for --mode offline (runs offline without external API keys)",
     )
     parser.add_argument(
         "--output",
@@ -305,11 +319,16 @@ def main() -> None:
     args = parser.parse_args()
 
     _print_banner()
+    force_mock = (
+        args.mock
+        or args.offline
+        or (args.mode in ("offline", "mock"))
+    )
     out_path = Path(args.output) if args.output else None
     asyncio.run(
         run_pipeline(
             lookback_days=args.lookback,
-            force_mock=args.mock,
+            force_mock=force_mock,
             output_html_path=out_path,
         )
     )
